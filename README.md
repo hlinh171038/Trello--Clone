@@ -1,4 +1,3 @@
-(test) folder set up
- - usefull for component not page
- - skip it in url
- - with layout.tsx file you can stype for all (somethings, trys) 
+library:
+- react- lucided (icon)
+- npx shadcn-ui@latest add button (button ui folder)
