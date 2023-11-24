@@ -3,7 +3,9 @@
 const OrganizationIdPage = () =>{
     return (
         <div>
-            Organization Page
+            <form>
+                <input/>
+            </form>
         </div>
     )
 }
