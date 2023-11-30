@@ -7,7 +7,7 @@ library:
  + npx prisma studio
  + npm i zod
 
-? try to create server side with prisma studio
-1. server side create in (actions/create-board)
-2. form --> action ={create}
+? use zod
+- create schema
+- validatedPath(link) --> realtime auto update
 
