@@ -2,7 +2,9 @@
 
 import { create } from "@/actions/create-board"
 import { Button } from "@/components/ui/button"
+
 import { useFormState } from "react-dom";
+import { FormInput } from "./form-input";
 
 
 export const Form =() =>{
@@ -11,25 +13,10 @@ export const Form =() =>{
   
     return (
         <form action={dispatch}>
-                <div className="flex flex-col space-y-2">
-                    <input
-                        id="title"
-                        name="title"
-                        required
-                        placeholder="Enter a board title"
-                        className="border-black border p-1" 
-                    />
-                    {state?.errors?.title ? (
-                        <div>
-                            {state.errors.title.map((err)=>{
-                                return <p key={err} className="text-rose-500">{err}</p>
-                            })}
-                        </div>
-                    ):null}
-                </div>
+               <FormInput errors={state.errors}/>
                 <Button type="submit" >
                     Submit
                 </Button>
-            </form>
+         </form>
     )
 }
