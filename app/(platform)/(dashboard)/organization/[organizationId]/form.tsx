@@ -4,9 +4,10 @@ import { createBoard } from "@/actions/create-board";
 import { Button } from "@/components/ui/button"
 
 import { useFormState } from "react-dom";
-import { FormInput } from "./form-input";
-import { FormButton } from "./form-button";
+
+import { FormSubmit } from "@/components/form/form-button";
 import { useAction } from "@/hooks/use-action";
+import { FormInput } from "@/components/form/form-input";
 
 
 export const Form =() =>{
@@ -25,8 +26,12 @@ export const Form =() =>{
   
     return (
         <form action={onSubmit}>
-               <FormInput errors={fieldErrors}/>
-               <FormButton/>
+               <FormInput 
+                    label="Board label"
+                    id="title"
+                    errors={fieldErrors}
+                />
+               <FormSubmit >Search</FormSubmit>
          </form>
     )
 }
