@@ -14,6 +14,7 @@ import {
  import { FormSubmit } from "./form-button";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
+import { createBoard } from "@/actions/create-board";
 
  interface FormPopoverProps {
     children: React.ReactNode;
@@ -28,7 +29,22 @@ import { Button } from "../ui/button";
     align,
     sideOffset=0
  }: FormPopoverProps) =>{
-    return (
+
+    const {execute,fieldErrors} = useAction(createBoard, {
+        onSuccess: (data) =>{
+            console.log({data})
+        },
+        onError: (error) =>{
+            console.log({error})
+        }
+    })
+
+    const Submit = (formData:FormData) =>{
+        const title = formData.get("title") as string;
+
+        execute({title});
+    }
+     return (
         <Popover>
             <PopoverTrigger asChild>
                 {children}
@@ -50,6 +66,17 @@ import { Button } from "../ui/button";
                     <X className="w-4 h-4" />
                 </Button>
             </PopoverClose>
+            <form className="space-y-4" action={Submit}>
+                <div className="space-y-4">
+                    <FormInput 
+                        id="title"
+                        label="Board title"
+                        type="text"
+                        errors={fieldErrors}
+                    />
+                </div>
+                <FormSubmit className="w-full">Create</FormSubmit>
+            </form>
             </PopoverContent>
         </Popover>
     )
