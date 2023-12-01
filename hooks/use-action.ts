@@ -33,9 +33,9 @@ export const useAction  = <TInput, TOutput> (
                     return;
                 }
                 // something went wrong with validation
-                if(result.fieldErrors){
-                    setFieldErrors(result.fieldErrors)
-                }
+               // remove it because setFeilErrors is also set both have error or not
+                setFieldErrors(result.fieldErrors)
+                
                 // server error
                 if(result.error) {
                     setError(result.error);
