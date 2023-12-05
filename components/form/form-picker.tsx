@@ -2,11 +2,12 @@
 
 import {useState, useEffect} from 'react';
 import { unsplash } from "@/lib/unsplash";
-import { Loader2 } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { defaultImage } from '@/constants/images';
+import Link from 'next/link';
 
 interface FormPickerProps {
     id:string;
@@ -28,7 +29,6 @@ export const FormPicker = ({
     useEffect(() =>{
       const fetchImages = async () =>{
         try {
-            throw new Error()
             const result = await unsplash.photos.getRandom({
                 collectionIds: ["317099"],
                 count: 9,
@@ -82,6 +82,18 @@ export const FormPicker = ({
                             className="object-cover rounded-sm"
                             src={image.urls.thumb}
                         />
+                        {selectedImageId === image.id && (
+                            <div className='absolute h-full w-full inset-y-0 bg-black/30 flex items-center justify-center'>
+                                <Check className='h-4 w-4 text-white'/>
+                            </div>
+                        )}
+                        <Link
+                            href={image.links.html}
+                            target='_blank'
+                            className='opacity-0 group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50'
+                        >
+                            {image.user.name}
+                        </Link>
                     </div>
                    )
                 })}
