@@ -16,6 +16,7 @@ import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import { createBoard } from "@/actions/create-board";
 import { toast } from "sonner";
+import { FormPicker } from "./form-picker";
 
  interface FormPopoverProps {
     children: React.ReactNode;
@@ -71,6 +72,10 @@ import { toast } from "sonner";
             </PopoverClose>
             <form className="space-y-4" action={Submit}>
                 <div className="space-y-4">
+                    <FormPicker 
+                        id="image"
+                        errors={fieldErrors}
+                    />
                     <FormInput 
                         id="title"
                         label="Board title"
