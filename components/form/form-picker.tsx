@@ -21,13 +21,14 @@ export const FormPicker = ({
     const {pending} = useFormStatus();
 
     // why Record ??/
-    const [images,setImages] = useState<Array<Record<string, any>>>([]);
+    const [images,setImages] = useState<Array<Record<string, any>>>(defaultImage);
     const [isLoading,setIsLoading] = useState(true);
     const [selectedImageId, setSelectedImageId] = useState(null)
 
     useEffect(() =>{
       const fetchImages = async () =>{
         try {
+            throw new Error()
             const result = await unsplash.photos.getRandom({
                 collectionIds: ["317099"],
                 count: 9,
