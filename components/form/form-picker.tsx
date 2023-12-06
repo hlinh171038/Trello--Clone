@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { defaultImage } from '@/constants/images';
 import Link from 'next/link';
+import { FormErrors } from './form-error';
 
 interface FormPickerProps {
     id:string;
@@ -76,6 +77,15 @@ export const FormPicker = ({
                             setSelectedImageId(image.id)
                         }}
                     >
+                        <input 
+                            type="radio"
+                            id={id}
+                            name={id}
+                            className='hidden'
+                            checked={selectedImageId === image.id}
+                            disabled={pending}
+                            value={`${image.id} | ${image.urls.thumb} | ${image.urls.full} | ${image.links.html} | ${image.user.name}`}
+                        />
                         <Image
                             fill
                             alt="Unsplash image"
@@ -98,6 +108,10 @@ export const FormPicker = ({
                    )
                 })}
             </div>
+            <FormErrors 
+             id="image"
+             errors={errors}
+            />
         </div>
     )
 }

@@ -9,15 +9,38 @@ import { CreateBoard } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   // check have userId or not 
-  const {userId} = auth();
+  const {userId,orgId } = auth();
 
-  if(!userId) {
+  if(!userId || !orgId) {
     return {
       error: "Unauthorized"
     }
   }
 
-  const {title} = data;
+  const {title,image} = data;
+
+  // .split because in (form-picker image contain |)
+  const [
+    imageId,
+    imageThumbUrl,
+    imageFullUrl,
+    imageLinkHTML,
+    imageUserName
+  ] = image.split("|");
+
+  console.log({
+    imageId,
+    imageThumbUrl,
+    imageFullUrl,
+    imageLinkHTML,
+    imageUserName
+  })
+
+  if(!imageId || !imageThumbUrl || !imageFullUrl || !imageLinkHTML || !imageUserName){
+    return {
+      error: "Missing fields. Failed to create board."
+    }
+  }
 
   let board;
 
@@ -25,8 +48,14 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     board = await db.board.create({
       data: {
         title,
+        orgId,
+        imageId,
+        imageThumbUrl,
+        imageLinkHTML,
+        imageUserName,
+       imageFullUrl,
       }
-    })
+    });
   } catch (error) {
     return {
       error: "Failed to create"
