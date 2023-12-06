@@ -12,5 +12,7 @@ library:
 - validatedPath(link) --> realtime auto update
 
 ? unsplash developer 'search gg"
+? npm i lodash
+? npm i -D @types/lodash
 
 
