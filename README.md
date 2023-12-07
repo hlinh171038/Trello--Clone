@@ -17,5 +17,10 @@ library:
 
 // show list component
 1. create model in schema
+2. update prisma
+    + npx prisma migrate reset
+    + npx prisma db push
+    + npx prisma generate 
+   
 
 
