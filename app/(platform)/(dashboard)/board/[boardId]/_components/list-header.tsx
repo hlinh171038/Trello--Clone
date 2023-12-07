@@ -9,6 +9,7 @@ import { updateList } from "@/actions/update-list"
 import { useAction } from "@/hooks/use-action"
 import { toast } from "sonner"
 import { error } from "console"
+import { ListOption } from "./list-option"
 
 interface ListHeaderProps {
     data: List
@@ -81,10 +82,11 @@ export const ListHeader = ({
   
     return (
         <div 
-            onClick={enableEditing}
+           
             className="pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2">
             {isEditing ? (
                 <form 
+                    onClick={enableEditing}
                     ref={formRef}
                     action={onSubmit}>
                     <input hidden id="id" name="id" value={data.id}/>
@@ -104,7 +106,10 @@ export const ListHeader = ({
                  {title}
                 </div>
             )}
-            
+            <ListOption 
+                onAddCard={()=>{}}
+                data={data}
+            />
         </div>
     )
 }
