@@ -106,7 +106,7 @@ const ListForm = () =>{
         <ListWrapper>
             <button 
              onClick={enableEditing}
-             className="w-full rounded-sm bg-white/75 m-2 text-start text-sm flex gap-2 items-center p-2 hover:bg-white/25 transition">
+             className="w-full rounded-sm bg-white/75  text-start text-sm flex gap-2 items-center p-2 hover:bg-white/25 transition">
                 <Plus className="w-4 h-4" />
                 Add some text
             </button>
