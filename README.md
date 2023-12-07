@@ -15,4 +15,7 @@ library:
 ? npm i lodash
 ? npm i -D @types/lodash
 
+// show list component
+1. create model in schema
+
 
