@@ -21,6 +21,7 @@ library:
     + npx prisma migrate reset
     + npx prisma db push
     + npx prisma generate 
+3. Editing form
    
 
 
