@@ -7,8 +7,10 @@ import { Popover,PopoverTrigger,PopoverContent,PopoverClose } from "@radix-ui/re
 import { MoreHorizontal, X } from "lucide-react";
 import { useAction } from "@/hooks/use-action";
 import { deleteList } from "@/actions/delete-list";
+import { coppyList } from "@/actions/coppy-list";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { ElementRef, useRef } from "react";
 
 
 interface ListOptionProps {
@@ -20,13 +22,14 @@ export const ListOption = ({
     data,
     onAddCard
 }: ListOptionProps) =>{
-
+    const closeRef = useRef<ElementRef<"button">>(null)
     const router = useRouter()
 
-    const {execute} = useAction(deleteList, {
+    const {execute: executeDelete} = useAction(deleteList, {
         onSuccess:(data) =>{
             toast.success("Deleted !!");
-            console.log('success')
+            console.log('success');
+            closeRef.current?.click()
             router.refresh();
         },
         onError: (error) =>{
@@ -36,13 +39,36 @@ export const ListOption = ({
         }
     });
 
+    //coppy actiion
+    const {execute:executeCoppy} = useAction(coppyList, {
+        onSuccess: (data) =>{
+            toast.success(`${data.title} - is coppied`);
+            router.refresh();
+            closeRef.current?.click()
+        },
+        onError: (error) =>{
+            toast.error(error);
+
+        }
+    })
+
     const onDelete = (formData:FormData) =>{
         console.log('ok')
     
         const id = formData.get("id") as string
         const boardId = formData.get("boardId") as string
 
-        execute({
+        executeDelete({
+            id,
+            boardId
+        })
+    }
+
+    const onCoppy = (formData:FormData) =>{
+        const id = formData.get('id') as string;
+        const boardId = formData.get('boardId') as string;
+
+        executeCoppy({
             id,
             boardId
         })
@@ -58,7 +84,7 @@ export const ListOption = ({
                 <div className="text-sm font-medium text-center">
                     list opotions
                 </div>
-                <PopoverClose asChild >
+                <PopoverClose ref={closeRef} asChild >
                     <Button className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600" variant="ghost">
                         <X className="w-4 h-4" />
                     </Button>
@@ -70,7 +96,10 @@ export const ListOption = ({
                 >
                     Add Card...
                 </Button>
-                <form>
+                <form
+                    action={onCoppy}
+                >
+                    
                     {/* hidden id, board */}
                     <input hidden id="id" name="id" value={data.id}/>
                     <input hidden id="boardId" name="boardId" value={data.boardId} />
@@ -81,6 +110,7 @@ export const ListOption = ({
                     >
                         Copy list...
                     </FormSubmit>
+                    <input type="submit" hidden />
                 </form>
                 <hr/>
                 <form action={onDelete}>
