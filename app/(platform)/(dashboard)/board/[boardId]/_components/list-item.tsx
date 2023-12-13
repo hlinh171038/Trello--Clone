@@ -7,6 +7,8 @@ import { CardForm } from "./card-form"
 import { cn } from "@/lib/utils"
 import { CardItem } from "./card-item"
 
+import { Draggable, Droppable } from "@hello-pangea/dnd"
+
 interface ListItemProps {
     data: ListWithCards,
     index: number
@@ -32,31 +34,48 @@ export const ListItem = ({
         })
     }
     return (
-       <li className="shrink-0 h-full w-[272px] select-none">
-            <div className="w-full rounded-sm bg-[#f1f2f4] shadow-sm pb-2">
-                <ListHeader  data={data} onAddCard={enableEditing} />
-                <ol
-                 className={cn(
-                    "mx-1 px-1 py-0.5 flex flex-col gap-y-2",
-                    data.cards.length >0 ?" mt-2" : "mt-0"
-                 )}
-                >
-                    {data.cards.map((card,index)=>{
-                        return <CardItem
-                                    key={card.id}
-                                    index={index}
-                                    card={card}
-                                />
-                    })}
-                </ol>
-                <CardForm 
-                    listId = {data.id}
-                    ref={textareaRef}
-                    isEditing={isEditing}
-                    enableEditing={enableEditing}
-                    disableEditing={disableEditing}
-                />
-            </div>
-       </li>
+        <Draggable draggableId={data.id} index={index}>
+            {(provided) => (
+            <li 
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+             className="shrink-0 h-full w-[272px] select-none"
+             >
+                    <div 
+                      {...provided.dragHandleProps}
+                      className="w-full rounded-sm bg-[#f1f2f4] shadow-sm pb-2">
+                        <ListHeader  data={data} onAddCard={enableEditing} />
+                        <Droppable droppableId={data.id} type="card">
+                            {(provided)=>(
+                            <ol
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={cn(
+                                "mx-1 px-1 py-0.5 flex flex-col gap-y-2",
+                                data.cards.length >0 ?" mt-2" : "mt-0"
+                            )}
+                            >
+                                {data.cards.map((card,index)=>{
+                                    return <CardItem
+                                                key={card.id}
+                                                index={index}
+                                                card={card}
+                                            />
+                                })}
+                                {provided.placeholder}
+                            </ol>
+                            )}
+                        </Droppable>
+                        <CardForm 
+                            listId = {data.id}
+                            ref={textareaRef}
+                            isEditing={isEditing}
+                            enableEditing={enableEditing}
+                            disableEditing={disableEditing}
+                        />
+                    </div>
+            </li>
+            )}
+       </Draggable>
     )
 }

@@ -1,6 +1,8 @@
 'use client'
 
 import { ListWithCards } from "@/types"
+
+import {DragDropContext, Droppable} from '@hello-pangea/dnd'
 import { List } from "@prisma/client"
 import ListForm from "./list-form"
 import { useEffect, useState } from "react"
@@ -22,13 +24,24 @@ const ListContainer = ({
         setOrderData(data);
     },[data])
     return (
-        <ol className="flex space-x-3 h-full m-2">
-            {orderData.map((item,index)=>{
-                return <ListItem  key={item.id} index={index} data={item}/>
-            })}
-            <ListForm />
-            <div className="flex-shrink-1 w-1"/>
-        </ol>
+        <DragDropContext onDragEnd={()=>{}}>
+            <Droppable droppableId="lists" type="list" direction="horizontal">
+                {(provided) =>(
+                <ol 
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className="flex space-x-3 h-full m-2"
+                >
+                    {orderData.map((item,index)=>{
+                        return <ListItem  key={item.id} index={index} data={item}/>
+                    })}
+                    {provided.placeholder}
+                    <ListForm />
+                    <div className="flex-shrink-1 w-1"/>
+                </ol>
+            )}
+            </Droppable>
+        </DragDropContext>
     )
 }
 
