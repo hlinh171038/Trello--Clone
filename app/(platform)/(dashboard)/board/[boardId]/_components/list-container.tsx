@@ -7,6 +7,10 @@ import { List } from "@prisma/client"
 import ListForm from "./list-form"
 import { useEffect, useState } from "react"
 import { ListItem } from "./list-item"
+import { useAction } from "@/hooks/use-action"
+import { updateListOrder } from "@/actions/update-list-order"
+import { updateCardOrder } from "@/actions/update-card-order"
+import { toast } from "sonner"
 
 interface ListContainerProps {
     data: ListWithCards[],
@@ -37,6 +41,24 @@ const ListContainer = ({
     data,
     boardId
 }: ListContainerProps) =>{
+
+    const {execute:executeListOrder} = useAction(updateListOrder, {
+        onSuccess: (data) =>{
+            toast.success("reorder list")
+        },
+        onError: (error) =>{
+            toast.error("some thing went wrong !!")
+        }
+    })
+
+    const {execute: executeCardOrder} = useAction(updateCardOrder, {
+        onSuccess: data =>{
+            toast.success("reordered card")
+        },
+        onError: error => {
+            toast.error("some thing went wrong !!")
+        }
+    })
 
     const [orderData, setOrderData] = useState(data);
 
@@ -76,6 +98,7 @@ const ListContainer = ({
             ).map((item,index) => ({...item, order: index}));
             // set to order data
             setOrderData(items);
+            executeListOrder({items,boardId})
         }
 
         // what haappen when user moving a card
@@ -119,6 +142,7 @@ const ListContainer = ({
                 setOrderData(newOrderData);
 
                 //TODO:trigger sever action
+                executeCardOrder({boardId: boardId, items: reorderedCards})
                 // move the card in the another list
             } else {
                 // remove card from the source list
@@ -138,6 +162,7 @@ const ListContainer = ({
                 // set order data to new 
                 setOrderData(newOrderData)
                 //TODO:trigger sever action
+                executeCardOrder({boardId: boardId, items: destList.cards})
             }
         }
     } 
