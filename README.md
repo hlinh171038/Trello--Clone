@@ -22,6 +22,13 @@ library:
     + npx prisma db push
     + npx prisma generate 
 3. Editing form
+
+9. query
+ 1. npm i @tanstack/react-query
+ 2. provider to transform whole app
+ 3. call api
+ 4. useQuey
+
    
 
 
