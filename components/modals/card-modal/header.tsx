@@ -48,10 +48,14 @@ export const Header = ({
     }
 
     const onSubmit = (formData:FormData) =>{
-       const title = formData.get("title") as string;
+       const title2 = formData.get("title") as string;
+
+        if(title2 === data.title){
+            return;
+        }
 
        execute({
-        title,
+        title: title2,
         id: data.id,
         boardId: params.boardId as string
        })
