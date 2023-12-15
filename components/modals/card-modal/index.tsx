@@ -6,6 +6,7 @@ import { fectcher } from "@/lib/fetcher"
 import { CardWithList } from "@/types"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
+import { Header } from "./header"
 
 export const CardModal = () =>{
     // connect use -card-modal hook
@@ -26,7 +27,9 @@ export const CardModal = () =>{
             onOpenChange={cardModal.onClose}
         >
             <DialogContent>
-                {cardData?.title}
+                {!cardData
+                ?<Header.Skeleton />
+                :< Header data={cardData}/>}
             </DialogContent>
         </Dialog>
     )

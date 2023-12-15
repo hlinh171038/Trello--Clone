@@ -9,6 +9,10 @@ import { Layout } from "lucide-react"
 import { useParams } from "next/navigation"
 import { ElementRef, useRef, useState } from "react"
 
+import { useAction } from "@/hooks/use-action"
+import { updateCard } from "@/actions/update-card"
+import { toast } from "sonner"
+
 interface HeaderProps {
     data: CardWithList
 }
@@ -19,16 +23,40 @@ export const Header = ({
     const queryClient = useQueryClient();
     const params = useParams();
     const inputRef = useRef<ElementRef<"input">>(null)
+    const [title,setTitle] = useState(data.title)
+
+    const {execute} = useAction(updateCard, {
+        onSuccess: (data) =>{
+            queryClient.invalidateQueries({
+                queryKey: ['card', data.id]
+            })
+            toast.success("card is updated.")
+            setTitle(data.title)
+        },
+        onError: (err) =>{
+            toast.error(err)
+        }
+    })
+
+   
+
+
+    console.log(params)
 
     const onBlur = () =>{
         inputRef.current?.form?.requestSubmit()
     }
 
     const onSubmit = (formData:FormData) =>{
-        console.log(formData.get("title"))
+       const title = formData.get("title") as string;
+
+       execute({
+        title,
+        id: data.id,
+        boardId: params.boardId as string
+       })
     }
 
-    const [title,setTitle] = useState(data.title)
     return (
         <div className="flex items-start gap-x-3 mb-6 w-full">
             <Layout className="h-5 w-5 mt-1 text-neutral-700" />
