@@ -6,6 +6,7 @@ import { CardWithList } from "@/types";
 import { Copy, Delete } from "lucide-react";
 import { useAction } from "@/hooks/use-action";
 import { coppyCard } from "@/actions/coppy-card";
+import { deleteCard } from "@/actions/delete-card";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
 
@@ -17,7 +18,7 @@ export const Actions = ({data}:ActionsProps) =>{
 
     const params = useParams()
 
-    const {execute} = useAction(coppyCard, {
+    const {execute:executeCoppyCard} = useAction(coppyCard, {
         onSuccess: (data) =>{
             toast.success("coppied card")
         },
@@ -26,8 +27,24 @@ export const Actions = ({data}:ActionsProps) =>{
         }
     })
 
+    const {execute: executeDeleteCard} = useAction(deleteCard, {
+        onSuccess: (data) => {
+            toast.success('deleted card')
+        },
+        onError: (error) => {
+            toast.error(error)
+        }
+    })
+
     const onCoppy = () => {
-        execute({
+        executeCoppyCard({
+            id:data.id,
+            boardId: params.boardId as string,
+        })
+    }
+
+    const onDelete = () =>{
+        executeDeleteCard({
             id:data.id,
             boardId: params.boardId as string,
         })
@@ -46,6 +63,7 @@ export const Actions = ({data}:ActionsProps) =>{
                 Copy
             </Button>
             <Button
+                onClick={onDelete}
                 variant="secondary"
                 className="w-full justify-start"
                 size="sm"
