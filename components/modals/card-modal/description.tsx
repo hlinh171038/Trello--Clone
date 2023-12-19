@@ -10,12 +10,27 @@ import { AlignLeft } from "lucide-react"
 import { useParams } from "next/navigation"
 import { ElementRef, useRef, useState } from "react"
 import { useEventListener, useOnClickOutside } from "usehooks-ts"
+import { updateCard } from "@/actions/update-card"
+import { useAction } from "@/hooks/use-action"
+import { toast } from "sonner"
 
 interface DescriptionProps{
     data: CardWithList
 }
 
 export const Description = ({data}: DescriptionProps) =>{
+    const {execute} = useAction(updateCard, {
+        onSuccess: (data) =>{
+            queryClient.invalidateQueries({
+                queryKey: ["card", data.id]
+            })
+            toast.success('updated description')
+            disableEditing()
+        },
+         onError: (err) => {
+            toast.error(err)
+         }
+    })
 
     // editing
     const [editing,setEditing] = useState(false)
@@ -56,9 +71,15 @@ export const Description = ({data}: DescriptionProps) =>{
     //onSubmit
     const onSubmit = (formData: FormData) =>{
         const description = formData.get("description") as string;
-        const boardId = params.boardId;
+        const boardId = params.boardId as string;
 
         // execute
+        execute({
+            title:data.title,
+            description,
+            boardId,
+            id:data.id
+        })
     }
 
     return (
@@ -70,10 +91,12 @@ export const Description = ({data}: DescriptionProps) =>{
                 </p>
                 {editing ? (
                     <form
+                        action={onSubmit}
                         ref={formRef}
                         className="space-y-2"
                     >
                         <FormTextarea 
+                            ref={textareaRef}
                             id="description"
                             className="w-full mt-2"
                             placeholder="Add a more detailed description"
