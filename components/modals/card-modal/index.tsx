@@ -10,6 +10,9 @@ import { Header } from "./header"
 import { Description } from "./description"
 import { Actions } from "./actions"
 
+import { AudiLog } from "@prisma/client"
+import { Activity } from "./activity"
+
 
 export const CardModal = () =>{
     // connect use -card-modal hook
@@ -21,6 +24,11 @@ export const CardModal = () =>{
     const {data: cardData} =useQuery<CardWithList>({
         queryKey: ["card", id],
         queryFn: () => fectcher(`/api/cards/${id}`)
+    })
+
+    const {data: auditLogData} = useQuery<AudiLog[]>({
+        queryKey:["card-logs",id],
+        queryFn: () =>fectcher(`/api/cards/${id}/logs`)
     })
    
     return (
@@ -48,6 +56,10 @@ export const CardModal = () =>{
                             {!cardData
                             ? <Description.Skeleton />
                             : <Description data={cardData} />
+                            }
+                            {!auditLogData
+                            ? <Activity.Skeleton />
+                            : <Activity items={auditLogData} />
                             }
                         </div>
                     </div>
