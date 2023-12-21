@@ -7,7 +7,7 @@ interface ActivityItemProps {
     data: AudiLog
 }
 
-export const ActivityItem = ({
+export const ActivityItem =  ({
     data
 }:ActivityItemProps) =>{
     return (
