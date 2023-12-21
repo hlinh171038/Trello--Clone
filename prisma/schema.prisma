@@ -86,3 +86,12 @@ model AudiLog {
   updateAt DateTime @updatedAt
 
 }
+
+model orgLimit {
+  id        String @id @default(uuid())
+  orgId     String @unique
+  count     Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
