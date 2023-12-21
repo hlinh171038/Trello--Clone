@@ -1,6 +1,7 @@
 import { generateLogMessage } from "@/lib/generate-log-message";
 import { AudiLog } from "@prisma/client";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import {Avatar, AvatarImage} from '@/components/ui/avatar'
+
 import {format} from 'date-fns'
 
 interface ActivityItemProps {

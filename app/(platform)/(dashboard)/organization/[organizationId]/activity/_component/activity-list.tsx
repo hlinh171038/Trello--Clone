@@ -1,4 +1,4 @@
-"use client"
+
 
 import { ActivityItem } from "@/components/activity-item";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,28 +8,31 @@ import { CardWithList } from "@/types";
 import { auth } from "@clerk/nextjs"
 import { useQuery } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
-import axios from 'axios'
+
 import { error } from "console";
 
-interface ActivityListProps {
-    data: any
-}
+export const ActivityList = async () =>{
+    const {orgId} = auth()
 
-export const ActivityList = ({data}:ActivityListProps) =>{
-    console.log(data)
+    if(!orgId) {
+        redirect("/select-org");
+    }
+
+    const auditLog  = await db.audiLog.findMany({
+        where: {
+            orgId
+        }
+    })
     return (
         <ol className="space-y-4 mt-4">
             <p className="hidden last:block text-xs text-center text-muted-foreground">
                 No activity found inside this organization
             </p>
             <p>
-                {/* {auditLog.map((item)=>{
+                {auditLog.map((item)=>{
                     return <ActivityItem key={item.id} data={item}/>
-                })} */}
-                {data && data.map((item: any) =>{
-                    return <ActivityItem key={item} data={item} />
                 })}
+               
             </p>
         </ol>
     )
