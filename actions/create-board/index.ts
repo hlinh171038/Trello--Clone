@@ -8,7 +8,7 @@ import { createSafeAction } from "@/lib/create-safe-action";
 import { CreateBoard } from "./schema";
 import { AuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
-import { increamentCount, hasAvailabelCount } from "@/lib/org-limit";
+import { incresementCount, hasAvailableCount } from "@/lib/org-limit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   // check have userId or not 
@@ -21,7 +21,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   // check has available count
-  const canCreate = await hasAvailabelCount();
+  const canCreate = await hasAvailableCount();
 
   if(!canCreate) {
     return {
@@ -69,7 +69,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       }
     });
 
-    await increamentCount()
+    await incresementCount()
 
     await AuditLog({
       entityTitle: board.title,

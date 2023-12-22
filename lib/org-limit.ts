@@ -2,7 +2,7 @@
 import { auth } from "@clerk/nextjs";
 import { db } from "./db";
 
-    export const increamentCount = async() =>{
+    export const incresementCount = async() =>{
         const {orgId} = auth()
 
         if(!orgId) {
@@ -19,14 +19,14 @@ import { db } from "./db";
                 data: {count: orgLimit.count + 1}
             })
         } else {
-            // not exist
+            // not exist (first board create)
             await db.orgLimit.create({
                 data: {orgId, count: 1}
             })
         }
     }   
 
-    export const decreamentCount = async() =>{
+    export const decresementCount = async() =>{
         const {orgId} = auth()
 
         if(!orgId) {
@@ -49,7 +49,9 @@ import { db } from "./db";
             })
         }
     }  
-    export const hasAvailabelCount = async() =>{
+
+    // healper check when user can create a free board
+    export const hasAvailableCount = async() =>{
         const {orgId} = auth();
 
         if(!orgId) {
@@ -67,7 +69,7 @@ import { db } from "./db";
             return false;
         }
     }
-
+  // last help tell us the number of free board
     export const getAvailableCount = async () =>{
         const {orgId} = auth();
 

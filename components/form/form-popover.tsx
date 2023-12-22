@@ -19,6 +19,8 @@ import { toast } from "sonner";
 import { FormPicker } from "./form-picker";
 import { ElementRef, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/hooks/use-pro-modal";
+
 
 
  interface FormPopoverProps {
@@ -35,6 +37,7 @@ import { useRouter } from "next/navigation";
     sideOffset=0
  }: FormPopoverProps) =>{
 
+    const proModal = useProModal()
     const closeRef = useRef<ElementRef<'button'>>(null);
     const router = useRouter();
 
@@ -48,7 +51,7 @@ import { useRouter } from "next/navigation";
         },
         onError: (error) =>{
             console.log({error})
-            toast.error("Board error !")
+            proModal.onOpen()
         }
     })
 
